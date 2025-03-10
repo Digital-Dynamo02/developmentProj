@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report an Incident</title>
+    <style>
+        #other-description {
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleOtherDescription(select) {
+            var otherDescription = document.getElementById("other-description");
+            if (select.value === "Other") {
+                otherDescription.style.display = "block";
+            } else {
+                otherDescription.style.display = "none";
+            }
+        }
+    function setTime() {
+            var now = new Date();
+            var localTime = now.getFullYear() + '-' + (now.getMonth() + 1).toString().padStart(2, '0') + '-' + now.getDate().toString().padStart(2, '0') + 'T' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('report-time').value = localTime;
+    }
+    window.onload = setTime;
+    </script>
+</head>
+<body>
+    <h1>Report an Incident</h1>
+    <form method="POST">
+        <label for="incident-type">Choose here - Incident or Emergency:</label><br>
+        <select name="incident_type" id="incident-type" onchange="toggleOtherDescription(this)" required>
+            <option value="">Select an option</option>
+            <option value="Fire">Fire</option>
+            <option value="Theft">Theft</option>
+            <option value="Health Issue">Health Issue</option>
+            <option value="Suspicious Activity">Suspicious Activity</option>
+            <option value="Natural Disaster">Natural Disaster</option>
+            <option value="Electrical Hazard">Electrical Hazard</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+        <label for="location">Location:</label><br>
+        <input type="text" name="location" placeholder="Enter location of the incident" required><br><br>
+        
+        <label for="report-time">Time of Incident:</label><br>
+        <input type="text" id="report-time" name="report_time" readonly><br><br>
+        <textarea id="other-description" name="incident_description" placeholder="Describe the incident..."></textarea><br>
+        <button type="submit">Submit Report</button>
+    </form>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

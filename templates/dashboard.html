@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .reports {
+            margin-bottom: 30px;
+        }
+        .report {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        a {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <div class="reports">
+        <h2>Recent Reports and Incidents</h2>
+        <!-- Placeholder for displaying recent reports -->
+        <div class="report">
+            <p><strong>Incident:</strong>theft at Steve Biko</p>
+            <p><strong>Date:</strong> 2025-03-10</p>
+        </div>
+        <div class="report">
+            <p><strong>Incident:</strong> fire in block A at Ritson campus</p>
+            <p><strong>Date:</strong> 2025-03-09</p>
+        </div>
+        <!-- Add more report divs as needed -->
+    </div>
+    <a href="{{ url_for('report') }}">Report an Incident</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
