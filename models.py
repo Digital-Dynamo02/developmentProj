@@ -1,19 +1,24 @@
-from flask_sqlalchemy import SQLAlchemy
+from extensions import db
+from flask_login import UserMixin
 
-db = SQLAlchemy()
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(150), nullable=False, unique=True)
-    email = db.Column(db.String(150), nullable=False, unique=True)
+    email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
-    
-    def set_password(self, password):
-        from werkzeug.security import generate_password_hash
-        self.password = generate_password_hash(password, method='pbkdf2:sha256')
-    
-    def check_password(self, password):
-        from werkzeug.security import check_password_hash
-        return check_password_hash(self.password, password)
+    name = db.Column(db.String(100), nullable=True)
+    phone = db.Column(db.String(20), nullable=True)
+    role = db.Column(db.String(50), default='student')  
 
-        
+
+class Incident(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    incident_type = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
+    status = db.Column(db.String(50), default='Pending')
+    longitude = db.Column(db.Float, nullable=True)  
+    latitude = db.Column(db.Float, nullable=True)   
+    location = db.Column(db.String(255), nullable=True) 
+    user = db.relationship('User', backref=db.backref('incidents', lazy=True))

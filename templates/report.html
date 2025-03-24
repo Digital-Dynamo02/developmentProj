@@ -4,47 +4,93 @@
     <meta charset="UTF-8">
     <title>Report an Incident</title>
     <style>
-        #other-description {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #description-container {
             display: none;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
     <script>
         function toggleOtherDescription(select) {
-            var otherDescription = document.getElementById("other-description");
+            var descriptionContainer = document.getElementById("description-container");
             if (select.value === "Other") {
-                otherDescription.style.display = "block";
+                descriptionContainer.style.display = "block";
             } else {
-                otherDescription.style.display = "none";
+                descriptionContainer.style.display = "none";
             }
         }
-    function setTime() {
+
+        function setTime() {
             var now = new Date();
-            var localTime = now.getFullYear() + '-' + (now.getMonth() + 1).toString().padStart(2, '0') + '-' + now.getDate().toString().padStart(2, '0') + 'T' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('report-time').value = localTime;
-    }
-    window.onload = setTime;
+
+           
+            var localTime = new Date(now.toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" }));
+
+           
+            var formattedTime = localTime.getFullYear() + '-' +
+                (localTime.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                localTime.getDate().toString().padStart(2, '0') + 'T' +
+                localTime.getHours().toString().padStart(2, '0') + ':' +
+                localTime.getMinutes().toString().padStart(2, '0') + ':' +
+                localTime.getSeconds().toString().padStart(2, '0');
+
+           
+            document.getElementById('report-time').value = formattedTime;
+        }
+
+        
+        window.onload = setTime;
     </script>
 </head>
 <body>
     <h1>Report an Incident</h1>
     <form method="POST">
-        <label for="incident-type">Choose here - Incident or Emergency:</label><br>
+        <label for="incident-type">Choose Incident or Emergency:</label>
         <select name="incident_type" id="incident-type" onchange="toggleOtherDescription(this)" required>
             <option value="">Select an option</option>
             <option value="Fire">Fire</option>
             <option value="Theft">Theft</option>
             <option value="Health Issue">Health Issue</option>
             <option value="Suspicious Activity">Suspicious Activity</option>
-            <option value="Natural Disaster">Natural Disaster</option>
             <option value="Electrical Hazard">Electrical Hazard</option>
             <option value="Other">Other</option>
-        </select><br><br>
-        <label for="location">Location:</label><br>
-        <input type="text" name="location" placeholder="Enter location of the incident" required><br><br>
+        </select>
+
         
-        <label for="report-time">Time of Incident:</label><br>
-        <input type="text" id="report-time" name="report_time" readonly><br><br>
-        <textarea id="other-description" name="incident_description" placeholder="Describe the incident..."></textarea><br>
+        <!-- Description for "Other" incidents -->
+        <div id="description-container">
+            <label for="incident-description">Description:</label>
+            <textarea id="incident-description" name="incident_description" placeholder="Describe the incident..."></textarea>
+        </div>
+
         <button type="submit">Submit Report</button>
     </form>
     <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
